@@ -1,0 +1,32 @@
+from PIL import Image
+import os
+
+def convert_images_to_jpg_bulk(source_dir, destination_dir):
+    # Ensure the destination directory exists
+    if not os.path.exists(destination_dir):
+        os.makedirs(destination_dir)
+
+    for filename in os.listdir(source_dir):
+        # Process only files with common image extensions
+        if filename.lower().endswith(('.png', '.bmp', '.jpeg', '.tiff', '.gif', '.webp' '.jfif')):
+            source_path = os.path.join(source_dir, filename)
+            # Get the base file name without the extension
+            base_filename = os.path.splitext(filename)[0]
+            # Create the destination file path with .jpg extension
+            dest_path = os.path.join(destination_dir, base_filename + '.jpg')
+            
+            try:
+                # Open the source image
+                with Image.open(source_path) as img:
+                    # Ensure the image is in RGB mode
+                    img = img.convert("RGB")
+                    # Save the image as JPG
+                    img.save(dest_path, 'JPEG')
+                    print(f"Successfully converted {filename} to {base_filename}.jpg")
+            except Exception as e:
+                print(f"Failed to convert {filename}: {e}")
+
+# Example usage:
+source_directory = r"Your Source Directory"
+destination_directory = r"Your Distination Directory"
+convert_images_to_jpg_bulk(source_directory, destination_directory)
